@@ -33,7 +33,7 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-        # mainin maven packge as part of the test, which can speed up the tests
+        # maintain all the maven packges as part of the test, which can speed up the tests
         cache: maven
 
     - name: Test with Maven
@@ -45,6 +45,15 @@ jobs:
       with:
         name: Jacoco coverage results
         path: target/site/jacoco
+    
+    # This action will store all the files in the current path (which will include pom.xml 
+    # as well as all source files and class files built under the target/ folder) and associate them with the key "cached-build-${{github.sha}}".
+    # sha is the hash code for the current commit
+    - name: Cache build
+      uses: actions/cache@v3
+      with:
+        key: cached-build-${{github.sha}}
+        path: .
 
   # Uploads dependency graph to GitHub to receive Dependabot alerts 
   update_dependence_graph:
@@ -55,6 +64,14 @@ jobs:
       contents: read
 
     steps:
+
+    # This action will be able to find the previously cached build files using the same key 
+    # so that they can be used for dependence graph analysis
+    - name: Restore cached build
+      uses: actions/cache@v3
+      with:
+        key: cached-build-${{github.sha}}
+        path: .
 
     # https://github.com/marketplace/actions/maven-dependency-tree-dependency-submission
     - name: Update dependency graph
