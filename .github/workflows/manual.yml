@@ -17,13 +17,14 @@ on:
         required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# a job is a container on the GitHub Cloud
 jobs:
   # This workflow contains a single job called "greet"
   greet:
-    # The type of runner that the job will run on
+    # The type of runner that the job will run on. Open that image
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Steps represent a sequence of tasks that will be executed as part of the job after the image boots up
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
