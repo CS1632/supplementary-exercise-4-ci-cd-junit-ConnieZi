@@ -33,6 +33,7 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
+        # mainin maven packge as part of the test, which can speed up the tests
         cache: maven
 
     - name: Test with Maven
